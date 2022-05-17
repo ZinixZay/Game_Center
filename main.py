@@ -58,12 +58,14 @@ class Servername(QMainWindow):
         widget.setCurrentIndex(widget.currentIndex() - 1)
 
 
+# Первоначальный запуск программы
+
 app = QApplication(sys.argv)
-id = QFontDatabase.addApplicationFont(':fonts/20665.ttf>')
+id = QFontDatabase.addApplicationFont('fonts/20665.ttf')
 widget = QtWidgets.QStackedWidget()
 mainWindow = MainWindow()
 serverName = Servername()
-font = QFont('somefont')
+font = QFont('20665')
 widget.setFont(font)
 widget.setWindowTitle('Spy')
 widget.addWidget(mainWindow)
