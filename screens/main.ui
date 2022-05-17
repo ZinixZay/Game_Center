@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Menu</class>
+ <widget class="QMainWindow" name="Menu">
+  <roperty name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </roperty>
+  <property name="font">
+   <font>
+    <pointsize>30</pointsize>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string/>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(175, 55, 0);</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QPushButton" name="hostButton">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>460</y>
+      <width>301</width>
+      <height>101</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Montserrat Alternates</family>
+      <pointsize>50</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 5px solid;
+border-radius: 20px;
+background-color: rgb(30, 37, 43);
+color: rgb(248, 250, 249);
+border-color: rgb(0, 1, 0);</string>
+    </property>
+    <property name="text">
+     <string>HOST</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="connectButton">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>460</y>
+      <width>361</width>
+      <height>101</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Montserrat Alternates</family>
+      <pointsize>50</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 5px solid;
+border-radius: 20px;
+background-color: rgb(30, 37, 43);
+color: rgb(248, 250, 249);
+border-color: rgb(0, 1, 0);</string>
+    </property>
+    <property name="text">
+     <string>CONNECT</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="nameLine">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>170</y>
+      <width>351</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Montserrat Alternates</family>
+      <pointsize>30</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 3px solid;
+border-color: rgb(30, 37, 43);
+color: rgb(250, 252, 251);
+background-color: rgb(124, 41, 0);</string>
+    </property>
+    <property name="text">
+     <string>Your NickName</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>0</y>
+      <width>401</width>
+      <height>601</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>../../../Downloads/обрез2.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <zorder>label</zorder>
+   <zorder>hostButton</zorder>
+   <zorder>connectButton</zorder>
+   <zorder>nameLine</zorder>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

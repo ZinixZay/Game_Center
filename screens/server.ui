@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>server</class>
+ <widget class="QMainWindow" name="server">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Spy</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(175, 55, 0);</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLineEdit" name="servernameLine">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>170</y>
+      <width>351</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Montserrat Alternates</family>
+      <pointsize>30</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 3px solid;
+border-color: rgb(30, 37, 43);
+color: rgb(250, 252, 251);
+background-color: rgb(124, 41, 0);</string>
+    </property>
+    <property name="text">
+     <string>Lobby name</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="doneButton">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>320</y>
+      <width>301</width>
+      <height>101</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Montserrat Alternates</family>
+      <pointsize>50</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 5px solid;
+border-radius: 20px;
+background-color: rgb(30, 37, 43);
+color: rgb(248, 250, 249);
+border-color: rgb(0, 1, 0);</string>
+    </property>
+    <property name="text">
+     <string>DONE</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="backButton">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>520</y>
+      <width>161</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Montserrat Alternates</family>
+      <pointsize>35</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 5px solid;
+border-radius: 20px;
+background-color: rgb(30, 37, 43);
+color: rgb(248, 250, 249);
+border-color: rgb(0, 1, 0);</string>
+    </property>
+    <property name="text">
+     <string>BACK</string>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
