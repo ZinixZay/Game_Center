@@ -2,7 +2,7 @@ import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.uic import loadUi
 from PyQt5.QtWidgets import QDialog, QApplication, QMainWindow, QMessageBox
-from PyQt5.QtGui import QFontDatabase, QFont
+from PyQt5.QtGui import QFontDatabase, QFont, QPixmap
 from db import *
 from errors import error_codes
 
@@ -22,6 +22,8 @@ class MainWindow(QMainWindow):
         loadUi("screens/main.ui", self)
         self.hostButton.clicked.connect(self.host_clicked)
         self.connectButton.clicked.connect(self.connect_clicked)
+        triple_agent = QPixmap('photos/triple.png')
+        self.labelPhoto.setPixmap(triple_agent)
 
     def host_clicked(self):
         global call_status, nick

@@ -128,7 +128,7 @@ background-color: rgb(124, 41, 0);</string>
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QLabel" name="label">
+   <widget class="QLabel" name="labelPhoto">
     <property name="geometry">
      <rect>
       <x>210</x>
@@ -140,14 +140,11 @@ background-color: rgb(124, 41, 0);</string>
     <property name="text">
      <string/>
     </property>
-    <property name="pixmap">
-     <pixmap>../../../Downloads/обрез2.png</pixmap>
-    </property>
     <property name="scaledContents">
      <bool>true</bool>
     </property>
    </widget>
-   <zorder>label</zorder>
+   <zorder>labelPhoto</zorder>
    <zorder>hostButton</zorder>
    <zorder>connectButton</zorder>
    <zorder>nameLine</zorder>
