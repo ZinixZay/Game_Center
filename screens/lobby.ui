@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>lobbyconnect</class>
+ <widget class="QMainWindow" name="lobbyconnect">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Spy</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(175, 55, 0);</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLabel" name="labelLobbyname">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>20</y>
+      <width>351</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Montserrat Alternates</family>
+      <pointsize>30</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 3px solid;
+border-color: rgb(30, 37, 43);
+color: rgb(250, 252, 251);
+background-color: rgb(124, 41, 0);</string>
+    </property>
+    <property name="text">
+     <string>Lobbby Name</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelSlot1">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>110</y>
+      <width>351</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Montserrat Alternates</family>
+      <pointsize>30</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 3px solid;
+border-color: rgb(30, 37, 43);
+color: rgb(250, 252, 251);
+background-color: rgb(124, 41, 0);</string>
+    </property>
+    <property name="text">
+     <string>Empty Slot</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelSlot2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>200</y>
+      <width>351</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Montserrat Alternates</family>
+      <pointsize>30</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 3px solid;
+border-color: rgb(30, 37, 43);
+color: rgb(250, 252, 251);
+background-color: rgb(124, 41, 0);</string>
+    </property>
+    <property name="text">
+     <string>Empty Slot</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelSlot3">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>290</y>
+      <width>351</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Montserrat Alternates</family>
+      <pointsize>30</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 3px solid;
+border-color: rgb(30, 37, 43);
+color: rgb(250, 252, 251);
+background-color: rgb(124, 41, 0);</string>
+    </property>
+    <property name="text">
+     <string>Empty Slot</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelSlot4">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>380</y>
+      <width>351</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Montserrat Alternates</family>
+      <pointsize>30</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 3px solid;
+border-color: rgb(30, 37, 43);
+color: rgb(250, 252, 251);
+background-color: rgb(124, 41, 0);</string>
+    </property>
+    <property name="text">
+     <string>Empty Slot</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelSlot5">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>470</y>
+      <width>351</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Montserrat Alternates</family>
+      <pointsize>30</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 3px solid;
+border-color: rgb(30, 37, 43);
+color: rgb(250, 252, 251);
+background-color: rgb(124, 41, 0);</string>
+    </property>
+    <property name="text">
+     <string>Empty Slot</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="backButton">
+    <property name="geometry">
+     <rect>
+      <x>550</x>
+      <y>460</y>
+      <width>221</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="font">
+     <font>
+      <family>Montserrat Alternates</family>
+      <pointsize>50</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 5px solid;
+border-radius: 20px;
+background-color: rgb(30, 37, 43);
+color: rgb(248, 250, 249);
+border-color: rgb(0, 1, 0);</string>
+    </property>
+    <property name="text">
+     <string>BACK</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="startButton">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>360</y>
+      <width>241</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="font">
+     <font>
+      <family>Montserrat Alternates</family>
+      <pointsize>50</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 5px solid;
+border-radius: 20px;
+background-color: rgb(30, 37, 43);
+color: rgb(248, 250, 249);
+border-color: rgb(0, 1, 0);</string>
+    </property>
+    <property name="text">
+     <string>START</string>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
