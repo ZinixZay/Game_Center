@@ -2,6 +2,7 @@ import psycopg2
 import datetime
 from config import *
 
+
 sql = psycopg2.connect(
     database=db_name,
     user=user_name,
@@ -45,7 +46,7 @@ def create_lobby(name: str = 'def', nickname: str = "def", role: str = 'def'):
         return {'status': 'error', 'content': content}
     command = f"INSERT INTO {name} (name, server_role) VALUES ('{nickname}', '{role}')"
     execute(command)
-    return {'status': 'ok'}
+    return {'status': 'ok', 'nick': nickname, 'name': name}
 
 
 def join_lobby(name: str = 'def', nickname: str = 'def', role: str = 'def'):
@@ -62,4 +63,11 @@ def join_lobby(name: str = 'def', nickname: str = 'def', role: str = 'def'):
         return {'status': 'error', 'content': content}
     command = f"INSERT INTO {name} (name, server_role) VALUES ('{nickname}', '{role}')"
     execute(command)
-    return {'status': 'ok'}
+    global playable_nick
+    playable_nick = nickname
+    return {'status': 'ok', 'nick': nickname, 'name': name}
+
+
+def get_server_role(name: str, nickname: str):
+    cur.execute(f"SELECT server_role FROM {name} WHERE name=('{nickname}')")
+    return next(cur)[0]

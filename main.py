@@ -1,10 +1,23 @@
 import sys
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtWidgets
 from PyQt5.uic import loadUi
-from PyQt5.QtWidgets import QDialog, QApplication, QMainWindow, QMessageBox
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PyQt5.QtGui import QFontDatabase, QFont, QPixmap
 from db import *
 from errors import error_codes
+
+game_info = {
+    'name': 'system555',
+    'nick': 'System'
+}
+
+
+def move_back(step: int):
+    widget.setCurrentIndex(widget.currentIndex() - step)
+
+
+def move_forward(step: int):
+    widget.setCurrentIndex(widget.currentIndex() + step)
 
 
 def showerror(content: str):
@@ -29,13 +42,13 @@ class MainWindow(QMainWindow):
         global call_status, nick
         nick = self.nameLine.text()
         call_status = 'host'
-        widget.setCurrentIndex(widget.currentIndex() + 1)
+        move_forward(1)
 
     def connect_clicked(self):
         global call_status, nick
         nick = self.nameLine.text()
         call_status = 'connect'
-        widget.setCurrentIndex(widget.currentIndex() + 1)
+        move_forward(1)
 
 
 class Servername(QMainWindow):
@@ -54,10 +67,33 @@ class Servername(QMainWindow):
         answer = catch_request(request)
         if answer['status'] == 'error':
             showerror(answer['content'])
+            move_back(1)
+        else:
+            global game_info
+            game_info = {
+                'nick': answer['nick'],
+                'name': answer['name']
+            }
+            move_forward(1)
 
-    @staticmethod
-    def back_clicked():
-        widget.setCurrentIndex(widget.currentIndex() - 1)
+    def back_clicked(self):
+        self.servernameLine.text = 'Server name'
+        move_back(1)
+
+
+class Lobby(QMainWindow):
+    def __init__(self):
+        global game_info
+        super(Lobby, self).__init__()
+        loadUi("screens/lobby.ui", self)
+        self.backButton.clicked.connect(self.back_button)
+        # print(game_info)
+        # if get_server_role(game_info['name'], game_info['nick']) != 'host':
+        #     print('123')
+        #     self.startButton.hide()
+
+    def back_button(self):
+        move_back(2)
 
 
 # Первоначальный запуск программы
@@ -67,11 +103,13 @@ id = QFontDatabase.addApplicationFont('fonts/20665.ttf')
 widget = QtWidgets.QStackedWidget()
 mainWindow = MainWindow()
 serverName = Servername()
+lobby = Lobby()
 font = QFont('20665')
 widget.setFont(font)
 widget.setWindowTitle('Spy')
 widget.addWidget(mainWindow)
 widget.addWidget(serverName)
+widget.addWidget(lobby)
 widget.setFixedSize(800, 600)
 widget.show()
 
