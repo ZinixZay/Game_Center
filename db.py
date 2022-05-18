@@ -42,7 +42,8 @@ def create_lobby(name: str = 'def', nickname: str = "def", role: str = 'def'):
                   f"status BOOLEAN DEFAULT (false))"
         execute(command)
     except Exception:
-        content = 'Упс! Произошла ошибка. Скорее всего лобби с таким названием уже существует'
+        content = 'Упс! Произошла ошибка. Скорее всего лобби с таким названием уже существует. ' \
+                  'Пожалуйста, перезапустите приложение'
         return {'status': 'error', 'content': content}
     command = f"INSERT INTO {name} (name, server_role) VALUES ('{nickname}', '{role}')"
     execute(command)
@@ -71,3 +72,11 @@ def join_lobby(name: str = 'def', nickname: str = 'def', role: str = 'def'):
 def get_server_role(name: str, nickname: str):
     cur.execute(f"SELECT server_role FROM {name} WHERE name=('{nickname}')")
     return next(cur)[0]
+
+
+def get_player_nicknames(name: str):
+    nicknames = list()
+    cur.execute(f"SELECT name FROM {name}")
+    for nick in cur.fetchall():
+        nicknames.append(nick[0])
+    return nicknames

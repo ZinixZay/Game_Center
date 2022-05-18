@@ -53,7 +53,7 @@ color: rgb(250, 252, 251);
 background-color: rgb(124, 41, 0);</string>
     </property>
     <property name="text">
-     <string>Lobby name</string>
+     <string>Lobby</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>

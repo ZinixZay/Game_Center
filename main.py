@@ -6,11 +6,6 @@ from PyQt5.QtGui import QFontDatabase, QFont, QPixmap
 from db import *
 from errors import error_codes
 
-game_info = {
-    'name': 'system555',
-    'nick': 'System'
-}
-
 
 def move_back(step: int):
     widget.setCurrentIndex(widget.currentIndex() - step)
@@ -41,6 +36,9 @@ class MainWindow(QMainWindow):
     def host_clicked(self):
         global call_status, nick
         nick = self.nameLine.text()
+        if len(nick) > 11:
+            showerror('Максимальное количество символов - 11')
+            return
         call_status = 'host'
         move_forward(1)
 
@@ -61,6 +59,9 @@ class Servername(QMainWindow):
 
     def done_clicked(self):
         name = self.servernameLine.text().replace(' ', '_')
+        if len(name) > 11:
+            showerror('Максимальное количество символов - 11')
+            return
         request = {'name': name,
                    'nickname': nick,
                    'status': call_status}
@@ -74,6 +75,10 @@ class Servername(QMainWindow):
                 'nick': answer['nick'],
                 'name': answer['name']
             }
+            if get_server_role(game_info['name'], game_info['nick']) != 'host':
+                lobby.startButton.hide()
+            lobby.list_refresh()
+            lobby.labelLobbyname.setText(game_info['name'])
             move_forward(1)
 
     def back_clicked(self):
@@ -87,16 +92,41 @@ class Lobby(QMainWindow):
         super(Lobby, self).__init__()
         loadUi("screens/lobby.ui", self)
         self.backButton.clicked.connect(self.back_button)
-        # print(game_info)
-        # if get_server_role(game_info['name'], game_info['nick']) != 'host':
-        #     print('123')
-        #     self.startButton.hide()
+        self.refreshButton.clicked.connect(self.list_refresh)
 
     def back_button(self):
         move_back(2)
 
+    def list_refresh(self):
+        global game_info
+        name = game_info['name']
+        players = get_player_nicknames(name)
+        for i in players:
+            already_in = [self.labelSlot1.text(),
+                          self.labelSlot2.text(),
+                          self.labelSlot3.text(),
+                          self.labelSlot4.text(),
+                          self.labelSlot5.text()]
+            if i in already_in:
+                continue
+            if self.labelSlot1.text() not in players:
+                self.labelSlot1.setText(i)
+                continue
+            if self.labelSlot2.text() not in players:
+                self.labelSlot2.setText(i)
+                continue
+            if self.labelSlot3.text() not in players:
+                self.labelSlot3.setText(i)
+                continue
+            if self.labelSlot4.text() not in players:
+                self.labelSlot4.setText(i)
+                continue
+            if self.labelSlot5.text() not in players:
+                self.labelSlot5.setText(i)
+                continue
 
-# Первоначальный запуск программы
+
+# Запуск программы
 
 app = QApplication(sys.argv)
 id = QFontDatabase.addApplicationFont('fonts/20665.ttf')

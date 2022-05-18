@@ -122,7 +122,7 @@ color: rgb(250, 252, 251);
 background-color: rgb(124, 41, 0);</string>
     </property>
     <property name="text">
-     <string>Your NickName</string>
+     <string>NickName</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
