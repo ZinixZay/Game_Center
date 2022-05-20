@@ -4,7 +4,41 @@ from PyQt5.uic import loadUi
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PyQt5.QtGui import QFontDatabase, QFont, QPixmap
 from db import *
+from threading import *
+from time import sleep
+# from thread_functions import *
 from errors import error_codes
+
+
+def list_refresh(lobby):
+    global game_info
+    name = game_info['name']
+    while 1:
+        players = get_player_nicknames(name)
+        for i in players:
+            already_in = [lobby.labelSlot1.text(),
+                          lobby.labelSlot2.text(),
+                          lobby.labelSlot3.text(),
+                          lobby.labelSlot4.text(),
+                          lobby.labelSlot5.text()]
+            if i in already_in:
+                continue
+            if lobby.labelSlot1.text() not in players:
+                lobby.labelSlot1.setText(i)
+                continue
+            if lobby.labelSlot2.text() not in players:
+                lobby.labelSlot2.setText(i)
+                continue
+            if lobby.labelSlot3.text() not in players:
+                lobby.labelSlot3.setText(i)
+                continue
+            if lobby.labelSlot4.text() not in players:
+                lobby.labelSlot4.setText(i)
+                continue
+            if lobby.labelSlot5.text() not in players:
+                lobby.labelSlot5.setText(i)
+                continue
+        sleep(2)
 
 
 def move_back(step: int):
@@ -77,8 +111,9 @@ class Servername(QMainWindow):
             }
             if get_server_role(game_info['name'], game_info['nick']) != 'host':
                 lobby.startButton.hide()
-            lobby.list_refresh()
             lobby.labelLobbyname.setText(game_info['name'])
+            t1 = Thread(target=list_refresh, args=(lobby,))
+            t1.start()
             move_forward(1)
 
     def back_clicked(self):
@@ -92,38 +127,11 @@ class Lobby(QMainWindow):
         super(Lobby, self).__init__()
         loadUi("screens/lobby.ui", self)
         self.backButton.clicked.connect(self.back_button)
-        self.refreshButton.clicked.connect(self.list_refresh)
 
     def back_button(self):
+        if get_server_role(game_info['name'], game_info['nick']) == 'host':
+            drop_lobby(game_info['name'])
         move_back(2)
-
-    def list_refresh(self):
-        global game_info
-        name = game_info['name']
-        players = get_player_nicknames(name)
-        for i in players:
-            already_in = [self.labelSlot1.text(),
-                          self.labelSlot2.text(),
-                          self.labelSlot3.text(),
-                          self.labelSlot4.text(),
-                          self.labelSlot5.text()]
-            if i in already_in:
-                continue
-            if self.labelSlot1.text() not in players:
-                self.labelSlot1.setText(i)
-                continue
-            if self.labelSlot2.text() not in players:
-                self.labelSlot2.setText(i)
-                continue
-            if self.labelSlot3.text() not in players:
-                self.labelSlot3.setText(i)
-                continue
-            if self.labelSlot4.text() not in players:
-                self.labelSlot4.setText(i)
-                continue
-            if self.labelSlot5.text() not in players:
-                self.labelSlot5.setText(i)
-                continue
 
 
 # Запуск программы

@@ -243,38 +243,6 @@ border-color: rgb(0, 1, 0);</string>
      <string>START</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="refreshButton">
-    <property name="geometry">
-     <rect>
-      <x>460</x>
-      <y>100</y>
-      <width>321</width>
-      <height>81</height>
-     </rect>
-    </property>
-    <property name="sizePolicy">
-     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-      <horstretch>0</horstretch>
-      <verstretch>0</verstretch>
-     </sizepolicy>
-    </property>
-    <property name="font">
-     <font>
-      <family>Montserrat Alternates</family>
-      <pointsize>50</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border: 5px solid;
-border-radius: 20px;
-background-color: rgb(30, 37, 43);
-color: rgb(248, 250, 249);
-border-color: rgb(0, 1, 0);</string>
-    </property>
-    <property name="text">
-     <string>REFRESH</string>
-    </property>
-   </widget>
   </widget>
  </widget>
  <resources/>

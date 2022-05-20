@@ -19,7 +19,7 @@ def execute(com: str):
     sql.commit()
 
 
-def catch_request(request: dict):
+def catch_request(request: dict) -> dict:
     nickname = request['nickname']
     name = request['name']
     answer = dict()
@@ -30,7 +30,7 @@ def catch_request(request: dict):
     return answer
 
 
-def create_lobby(name: str = 'def', nickname: str = "def", role: str = 'def'):
+def create_lobby(name: str = 'def', nickname: str = "def", role: str = 'def') -> dict:
     try:
         command = f"CREATE TABLE {name}" \
                   f"(" \
@@ -50,7 +50,7 @@ def create_lobby(name: str = 'def', nickname: str = "def", role: str = 'def'):
     return {'status': 'ok', 'nick': nickname, 'name': name}
 
 
-def join_lobby(name: str = 'def', nickname: str = 'def', role: str = 'def'):
+def join_lobby(name: str = 'def', nickname: str = 'def', role: str = 'def') -> dict:
     try:
         nicknames = list()
         cur.execute(f"SELECT name FROM {name}")
@@ -69,14 +69,24 @@ def join_lobby(name: str = 'def', nickname: str = 'def', role: str = 'def'):
     return {'status': 'ok', 'nick': nickname, 'name': name}
 
 
-def get_server_role(name: str, nickname: str):
+def get_server_role(name: str, nickname: str) -> str:
+    com = f"SELECT server_role FROM {name} WHERE name=('{nickname}')"
+    print(com)
     cur.execute(f"SELECT server_role FROM {name} WHERE name=('{nickname}')")
     return next(cur)[0]
 
 
-def get_player_nicknames(name: str):
+def get_player_nicknames(name: str) -> list:
     nicknames = list()
     cur.execute(f"SELECT name FROM {name}")
     for nick in cur.fetchall():
         nicknames.append(nick[0])
     return nicknames
+
+
+def drop_lobby(name: str):
+    com = f"DROP TABLE {name}"
+    print(com)
+    execute(com)
+
+
