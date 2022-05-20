@@ -6,38 +6,42 @@ from PyQt5.QtGui import QFontDatabase, QFont, QPixmap
 from db import *
 from threading import *
 from time import sleep
-# from thread_functions import *
 from errors import error_codes
+
+''' Вспомогательные функции '''
 
 
 def list_refresh(lobby):
     global game_info
     name = game_info['name']
     while 1:
-        players = get_player_nicknames(name)
-        for i in players:
-            already_in = [lobby.labelSlot1.text(),
-                          lobby.labelSlot2.text(),
-                          lobby.labelSlot3.text(),
-                          lobby.labelSlot4.text(),
-                          lobby.labelSlot5.text()]
-            if i in already_in:
-                continue
-            if lobby.labelSlot1.text() not in players:
-                lobby.labelSlot1.setText(i)
-                continue
-            if lobby.labelSlot2.text() not in players:
-                lobby.labelSlot2.setText(i)
-                continue
-            if lobby.labelSlot3.text() not in players:
-                lobby.labelSlot3.setText(i)
-                continue
-            if lobby.labelSlot4.text() not in players:
-                lobby.labelSlot4.setText(i)
-                continue
-            if lobby.labelSlot5.text() not in players:
-                lobby.labelSlot5.setText(i)
-                continue
+        try:
+            players = get_player_nicknames(name)
+        except:
+            break
+        lobby.labelSlot1.setText(players[0])
+        if len(players) > 1:
+            lobby.labelSlot2.setText(players[1])
+        else:
+            lobby.labelSlot2.setText('Empty slot')
+            lobby.labelSlot3.setText('Empty slot')
+            lobby.labelSlot4.setText('Empty slot')
+            lobby.labelSlot5.setText('Empty slot')
+        if len(players) > 2:
+            lobby.labelSlot3.setText(players[2])
+        else:
+            lobby.labelSlot3.setText('Empty slot')
+            lobby.labelSlot4.setText('Empty slot')
+            lobby.labelSlot5.setText('Empty slot')
+        if len(players) > 3:
+            lobby.labelSlot4.setText(players[3])
+        else:
+            lobby.labelSlot4.setText('Empty slot')
+            lobby.labelSlot5.setText('Empty slot')
+        if len(players) > 4:
+            lobby.labelSlot5.setText(players[4])
+        else:
+            lobby.labelSlot5.setText('Empty slot')
         sleep(2)
 
 
@@ -56,6 +60,9 @@ def showerror(content: str):
     msg.setInformativeText(content)
     msg.setWindowTitle("Error")
     msg.exec_()
+
+
+''' Окна '''
 
 
 class MainWindow(QMainWindow):
@@ -112,6 +119,7 @@ class Servername(QMainWindow):
             if get_server_role(game_info['name'], game_info['nick']) != 'host':
                 lobby.startButton.hide()
             lobby.labelLobbyname.setText(game_info['name'])
+            global t1
             t1 = Thread(target=list_refresh, args=(lobby,))
             t1.start()
             move_forward(1)
@@ -131,10 +139,12 @@ class Lobby(QMainWindow):
     def back_button(self):
         if get_server_role(game_info['name'], game_info['nick']) == 'host':
             drop_lobby(game_info['name'])
+        else:
+            leave_player(game_info['name'], game_info['nick'])
         move_back(2)
 
 
-# Запуск программы
+''' Запуск программы '''
 
 app = QApplication(sys.argv)
 id = QFontDatabase.addApplicationFont('fonts/20665.ttf')
@@ -151,6 +161,7 @@ widget.addWidget(lobby)
 widget.setFixedSize(800, 600)
 widget.show()
 
+''' Завершение работы программы '''
 
 try:
     sys.exit(app.exec_())

@@ -71,7 +71,6 @@ def join_lobby(name: str = 'def', nickname: str = 'def', role: str = 'def') -> d
 
 def get_server_role(name: str, nickname: str) -> str:
     com = f"SELECT server_role FROM {name} WHERE name=('{nickname}')"
-    print(com)
     cur.execute(f"SELECT server_role FROM {name} WHERE name=('{nickname}')")
     return next(cur)[0]
 
@@ -86,7 +85,9 @@ def get_player_nicknames(name: str) -> list:
 
 def drop_lobby(name: str):
     com = f"DROP TABLE {name}"
-    print(com)
     execute(com)
 
 
+def leave_player(name: str, nickname: str):
+    com = f"DELETE FROM {name} WHERE name=('{nickname}')"
+    execute(com)
