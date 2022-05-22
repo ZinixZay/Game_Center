@@ -118,3 +118,9 @@ def get_location(name: str, nick: str):
     com = f"SELECT location FROM {name} WHERE name=('{nick}')"
     cur.execute(com)
     return next(cur)[0]
+
+
+def get_game_role(name: str, nickname: str):
+    com = f"SELECT role FROM {name} WHERE name=('{nickname}')"
+    cur.execute(com)
+    return next(cur)[0]
