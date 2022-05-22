@@ -127,7 +127,7 @@ def distribute_roles_and_locations():
 
 
 def set_the_local_timer():
-    timer = '0:20'
+    timer = '0:08'
     start_time = int(round(time(), 0))
     end_time = start_time + int(timer[0]) * 60 + int(timer[2:])
     secs = str(int(end_time - time()) % 60)
