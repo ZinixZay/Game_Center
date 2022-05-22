@@ -47,9 +47,9 @@ background-color: rgb(124, 41, 0);</string>
    <widget class="QLabel" name="labelAddition">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>0</x>
       <y>90</y>
-      <width>781</width>
+      <width>801</width>
       <height>251</height>
      </rect>
     </property>
@@ -74,7 +74,7 @@ background-color: rgb(124, 41, 0);</string>
      <rect>
       <x>10</x>
       <y>350</y>
-      <width>241</width>
+      <width>781</width>
       <height>191</height>
      </rect>
     </property>
