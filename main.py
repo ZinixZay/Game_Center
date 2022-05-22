@@ -6,20 +6,51 @@ from PyQt5.QtGui import QFontDatabase, QFont, QPixmap
 from db import *
 from threading import *
 from time import sleep
+from time import time
 from errors import error_codes
 
 ''' Вспомогательные функции '''
 
 
+def set_the_local_timer():
+    timer = '0:20'
+    start_time = int(round(time(), 0))
+    end_time = start_time + int(timer[0]) * 60 + int(timer[2:])
+    secs = str(int(end_time - time()) % 60)
+    if len(secs) == 1:
+        secs = '0' + secs
+    timer = str(int(end_time - time()) // 60) + ':' + secs
+    while timer != '0:00':
+        secs = str(int(end_time - time()) % 60)
+        if len(secs) == 1:
+                secs = '0' + secs
+        timer = str(int(end_time - time()) // 60) + ':' + secs
+        game.labelTimer.setText(timer)
+        sleep(1)
+    if get_server_role(game_info['name'], game_info['nick']) == 'host':
+        change_game_status(game_info['name'], 'time_up')
+    else:
+        while get_game_status(game_info['name'], game_info['nick']) != 'time_up':
+            sleep(1)
+    print('time_up')
+
+
+
 def close_all_threads():
     global if_check_game, if_refresh_slots
+    if get_server_role(game_info['name'], game_info['nick']) == 'host':
+        drop_lobby(game_info['name'])
     if_check_game, if_refresh_slots = False, False
 
 
 def check_game_status(name: str, nickname: str):
     sleep(5)
     while if_check_game:
-        get_game_status(name, nickname)
+        status = get_game_status(name, nickname)
+        if status == 'started':
+            local_timer = Thread(target=set_the_local_timer)
+            local_timer.start()
+            break
         sleep(2)
 
 
@@ -139,8 +170,10 @@ class Servername(QMainWindow):
             if_refresh_slots, if_check_game = True, True
             slot_refreshing = Thread(target=list_refresh, args=(lobby,))
             slot_refreshing.start()
-            game_status_checking = Thread(target=check_game_status, args=(game_info['name'], game_info['nick']))
-            game_status_checking.start()
+            sleep(1)
+            if get_server_role(game_info['name'], game_info['nick']) != 'host':
+                game_status_checking = Thread(target=check_game_status, args=(game_info['name'], game_info['nick']))
+                game_status_checking.start()
             move_forward(1)
 
     def back_clicked(self):
@@ -166,7 +199,18 @@ class Lobby(QMainWindow):
         move_back(2)
 
     def start_clicked(self):
+        global if_refresh_slots
+        if_refresh_slots = False
         change_game_status(game_info['name'], 'started')
+        local_timer = Thread(target=set_the_local_timer)
+        local_timer.start()
+        move_forward(1)
+
+
+class Game(QMainWindow):
+    def __init__(self):
+        super(Game, self).__init__()
+        loadUi("screens/game.ui", self)
 
 
 class Screens(QtWidgets.QStackedWidget):
@@ -183,12 +227,14 @@ widget = Screens()
 mainWindow = MainWindow()
 serverName = Servername()
 lobby = Lobby()
+game = Game()
 font = QFont('20665')
 widget.setFont(font)
 widget.setWindowTitle('Spy')
 widget.addWidget(mainWindow)
 widget.addWidget(serverName)
 widget.addWidget(lobby)
+widget.addWidget(game)
 widget.setFixedSize(800, 600)
 widget.show()
 
