@@ -39,7 +39,11 @@ def create_lobby(name: str = 'def', nickname: str = "def", role: str = 'def') ->
                   f"role CHARACTER VARYING(20) DEFAULT ('player')," \
                   f"server_role CHARACTER VARYING(10)," \
                   f"location CHARACTER VARYING(30)," \
-                  f"status CHARACTER VARYING(15) DEFAULT ('waiting'))"
+                  f"status CHARACTER VARYING(15) DEFAULT ('waiting')," \
+                  f"votes CHARACTER VARYING(2) DEFAULT ('0')," \
+                  f"ready CHARACTER VARYING(3) DEFAULT ('no')," \
+                  f"done CHARACTER VARYING(5) DEFAULT ('no')," \
+                  f"suggestion CHARACTER VARYING(30) DEFAULT ('no'))"
         execute(command)
     except Exception:
         content = 'Упс! Произошла ошибка. Скорее всего лобби с таким названием уже существует. ' \
@@ -122,5 +126,58 @@ def get_location(name: str, nick: str):
 
 def get_game_role(name: str, nickname: str):
     com = f"SELECT role FROM {name} WHERE name=('{nickname}')"
+    cur.execute(com)
+    return next(cur)[0]
+
+
+def votes_increase(name: str, nickname: str):
+    com = f"SELECT votes FROM {name} WHERE name=('{nickname}')"
+    cur.execute(com)
+    ch = str(int(next(cur)[0]) + 1)
+    com = f"UPDATE {name} SET votes='{ch}' WHERE name=('{nickname}')"
+    execute(com)
+
+
+def change_ready_status(name: str, nickname: str):
+    com = f"UPDATE {name} SET ready='yes' WHERE name=('{nickname}')"
+    execute(com)
+
+
+def get_ready_status(name: str, nickname: str):
+    com = f"SELECT ready FROM {name} WHERE name=('{nickname}')"
+    cur.execute(com)
+    return next(cur)[0]
+
+
+def end_game(name: str):
+    com = f"UPDATE {name} SET done='yes'"
+    execute(com)
+
+
+def is_end_game(name: str, nickname: str):
+    com = f"SELECT done FROM {name} WHERE name=('{nickname}')"
+    cur.execute(com)
+    return next(cur)[0]
+
+
+def make_suggestion(name: str, val: str, nickname: str):
+    com = f"UPDATE {name} SET suggestion='{val}' WHERE name=('{nickname}')"
+    execute(com)
+
+
+def get_votes(name: str, nickname: str):
+    com = f"SELECT votes FROM {name} WHERE name=('{nickname}')"
+    cur.execute(com)
+    return next(cur)[0]
+
+
+def get_suggestion(name: str, nickname: str):
+    com = f"SELECT suggestion FROM {name} WHERE name=('{nickname}')"
+    cur.execute(com)
+    return next(cur)[0]
+
+
+def get_spy(name: str):
+    com = f"SELECT name FROM {name} WHERE role=('spy')"
     cur.execute(com)
     return next(cur)[0]

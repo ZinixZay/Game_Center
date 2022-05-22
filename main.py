@@ -1,17 +1,116 @@
-import sys
 import random
-from PyQt5 import QtWidgets
-from PyQt5.uic import loadUi
-from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox
-from PyQt5.QtGui import QFontDatabase, QFont, QPixmap
-from db import *
+import sys
+from fuzzywuzzy import fuzz
 from threading import *
 from time import sleep
 from time import time
+
+from PyQt5 import QtWidgets
+from PyQt5.QtGui import QFontDatabase, QFont, QPixmap
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox
+from PyQt5.uic import loadUi
+
+from db import *
 from errors import error_codes
 from locations import locations
 
 ''' Вспомогательные функции '''
+
+
+def calculate_game_result():
+    players = get_player_nicknames(game_info['name'])
+    vote_result = dict()
+    for nickname in players:
+        vote_result[nickname] = int(get_votes(game_info['name'], nickname))
+    mc, killed, draw = 0, '', False
+    for player, count in vote_result.items():
+        if count > mc:
+            mc, killed, draw = count, player, False
+        elif count == mc:
+            draw = True
+    if draw or killed != get_spy(game_info['name']):
+        results.labelSpy_info.setText('Шпиона не поймали. Им был:')
+    results.labelSpy.setText(f'{get_spy(game_info["name"])}')
+    if fuzz.token_sort_ratio(get_suggestion(game_info['name'], game_info['nick']),
+                             get_location(game_info['name'], game_info['nick'])) < 60:
+        results.labellocation_info.setText('Шпион не угадал локацию:')
+    results.labellocation.setText(get_location(game_info['name'], game_info['nick']))
+
+
+def check_game_ended():
+    while 1:
+        status = is_end_game(game_info['name'], game_info['nick'])
+        if status == 'yes':
+            calculate_game_result()
+            move_forward(1)
+            break
+        sleep(1)
+
+
+def check_all_ready():
+    while 1:
+        players = get_player_nicknames(game_info['name'])
+        statuses = list()
+        for nickname in players:
+            statuses.append(get_ready_status(game_info['name'], nickname))
+        print(statuses)
+        if 'no' not in statuses:
+            end_game(game_info['name'])
+            calculate_game_result()
+            move_forward(1)
+            break
+        sleep(1)
+
+
+def vote_made():
+    voting.candidate4.hide()
+    voting.candidate3.hide()
+    voting.candidate2.hide()
+    voting.candidate1.hide()
+    voting.locationLine.hide()
+    voting.admitButton.hide()
+    voting.labelInfo.hide()
+    if get_server_role(game_info['name'], game_info['nick']) == 'host':
+        control_all_answered = Thread(target=check_all_ready)
+        control_all_answered.start()
+    else:
+        control_game_ended = Thread(target=check_game_ended)
+        control_game_ended.start()
+    voting.labelInfo2.show()
+
+
+def prepare_to_vote():
+    voting.labelInfo2.hide()
+    if get_game_role(game_info['name'], game_info['nick']) == 'spy':
+        voting.candidate1.hide()
+        voting.candidate2.hide()
+        voting.candidate3.hide()
+        voting.candidate4.hide()
+    else:
+        voting.locationLine.hide()
+        voting.admitButton.hide()
+        players = get_player_nicknames(game_info['name'])
+        del players[players.index(game_info['nick'])]
+        if len(players) == 1:
+            voting.candidate1.setText(players[0])
+            voting.candidate2.hide()
+            voting.candidate3.hide()
+            voting.candidate4.hide()
+        elif len(players) == 2:
+            voting.candidate1.setText(players[0])
+            voting.candidate2.setText(players[1])
+            voting.candidate3.hide()
+            voting.candidate4.hide()
+        elif len(players) == 3:
+            voting.candidate1.setText(players[0])
+            voting.candidate2.setText(players[1])
+            voting.candidate3.setText(players[2])
+            voting.candidate4.hide()
+        elif len(players) == 4:
+            voting.candidate1.setText(players[0])
+            voting.candidate2.setText(players[1])
+            voting.candidate3.setText(players[2])
+            voting.candidate4.setText(players[3])
 
 
 def distribute_roles_and_locations():
@@ -48,7 +147,8 @@ def set_the_local_timer():
     else:
         while get_game_status(game_info['name'], game_info['nick']) != 'time_up':
             sleep(1)
-    print('time_up')
+    prepare_to_vote()
+    move_forward(1)
 
 
 def close_all_threads():
@@ -65,7 +165,6 @@ def check_game_status(name: str, nickname: str):
         if status == 'started':
             local_timer = Thread(target=set_the_local_timer)
             local_timer.start()
-            print(game)
             if get_game_role(game_info['name'], game_info['nick']) == 'spy':
                 game.labelAddition.setText('Вычислите локацию пока у вас есть время!')
                 game.labelAddition_2.setText('Локация: ???')
@@ -232,6 +331,54 @@ class Game(QMainWindow):
         loadUi("screens/game.ui", self)
 
 
+class Voting(QMainWindow):
+    def __init__(self):
+        super(Voting, self).__init__()
+        loadUi("screens/voting.ui", self)
+        self.candidate1.clicked.connect(self.cd1)
+        self.candidate2.clicked.connect(self.cd2)
+        self.candidate3.clicked.connect(self.cd3)
+        self.candidate4.clicked.connect(self.cd4)
+        self.admitButton.clicked.connect(self.done)
+
+    def cd1(self):
+        votes_increase(game_info['name'], self.candidate1.text())
+        change_ready_status(game_info['name'], game_info['nick'])
+        vote_made()
+
+    def cd2(self):
+        votes_increase(game_info['name'], self.candidate2.text())
+        change_ready_status(game_info['name'], game_info['nick'])
+        vote_made()
+
+    def cd3(self):
+        votes_increase(game_info['name'], self.candidate3.text())
+        change_ready_status(game_info['name'], game_info['nick'])
+        vote_made()
+
+    def cd4(self):
+        votes_increase(game_info['name'], self.candidate4.text())
+        change_ready_status(game_info['name'], game_info['nick'])
+        vote_made()
+
+    def done(self):
+        change_ready_status(game_info['name'], game_info['nick'])
+        players = get_player_nicknames(game_info['name'])
+        for nickname in players:
+            make_suggestion(game_info['name'], self.locationLine.text(), nickname)
+        vote_made()
+
+
+class Results(QMainWindow):
+    def __init__(self):
+        super(Results, self).__init__()
+        loadUi("screens/results.ui", self)
+        self.exitButton.clicked.connect(self.end)
+
+    def end(self):
+        sys.exit()
+
+
 class Screens(QtWidgets.QStackedWidget):
     def closeEvent(self, event):
         close_all_threads()
@@ -247,6 +394,8 @@ mainWindow = MainWindow()
 serverName = Servername()
 lobby = Lobby()
 game = Game()
+voting = Voting()
+results = Results()
 font = QFont('20665')
 widget.setFont(font)
 widget.setWindowTitle('Spy')
@@ -254,6 +403,8 @@ widget.addWidget(mainWindow)
 widget.addWidget(serverName)
 widget.addWidget(lobby)
 widget.addWidget(game)
+widget.addWidget(voting)
+widget.addWidget(results)
 widget.setFixedSize(800, 600)
 widget.show()
 
