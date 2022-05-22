@@ -112,3 +112,9 @@ def change_game_role(name: str, nick: str, val: str):
 def change_location(name: str, val: str):
     com = f"UPDATE {name} SET location='{val}'"
     execute(com)
+
+
+def get_location(name: str, nick: str):
+    com = f"SELECT location FROM {name} WHERE name=('{nick}')"
+    cur.execute(com)
+    return next(cur)[0]

@@ -65,6 +65,11 @@ def check_game_status(name: str, nickname: str):
         if status == 'started':
             local_timer = Thread(target=set_the_local_timer)
             local_timer.start()
+            if get_game_status(game_info['name'], game_info['nick']) == 'spy':
+                game.labelAddition.setText('Вычислите локацию пока у вас есть время!')
+                game.labelAddition_2.setText('Локация: ???')
+            else:
+                game.labelAddition_2.setText(f'Локация: {get_location(game_info["name"], game_info["nick"])}')
             move_forward(1)
             break
         sleep(2)
