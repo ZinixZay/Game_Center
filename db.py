@@ -36,7 +36,7 @@ def create_lobby(name: str = 'def', nickname: str = "def", role: str = 'def') ->
                   f"(" \
                   f"Id SERIAL PRIMARY KEY," \
                   f"name CHARACTER VARYING(30)," \
-                  f"role CHARACTER VARYING(20)," \
+                  f"role CHARACTER VARYING(20) DEFAULT ('player')," \
                   f"server_role CHARACTER VARYING(10)," \
                   f"location CHARACTER VARYING(30)," \
                   f"status CHARACTER VARYING(15) DEFAULT ('waiting'))"
@@ -101,4 +101,14 @@ def get_game_status(name: str, nickname: str):
 
 def change_game_status(name: str, val: str):
     com = f"UPDATE {name} SET status='{val}'"
+    execute(com)
+
+
+def change_game_role(name: str, nick: str, val: str):
+    com = f"UPDATE {name} SET role='{val}' WHERE name=('{nick}')"
+    execute(com)
+
+
+def change_location(name: str, val: str):
+    com = f"UPDATE {name} SET location='{val}'"
     execute(com)

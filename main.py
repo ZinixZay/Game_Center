@@ -1,4 +1,5 @@
 import sys
+import random
 from PyQt5 import QtWidgets
 from PyQt5.uic import loadUi
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox
@@ -8,8 +9,20 @@ from threading import *
 from time import sleep
 from time import time
 from errors import error_codes
+from locations import locations
 
 ''' Вспомогательные функции '''
+
+
+def distribute_roles_and_locations():
+    players = get_player_nicknames(game_info['name'])
+    spy = random.choice(players)
+    location = random.choice(locations)
+    print('rd')
+    change_location(game_info['name'], location)
+    print('lc')
+    change_game_role(game_info['name'], game_info['nick'], 'spy')
+    print('rl')
 
 
 def set_the_local_timer():
@@ -43,7 +56,7 @@ def close_all_threads():
 
 
 def check_game_status(name: str, nickname: str):
-    sleep(5)
+    sleep(3)
     while if_check_game:
         status = get_game_status(name, nickname)
         if status == 'started':
@@ -105,7 +118,7 @@ def showerror(content: str):
     msg.exec_()
 
 
-''' Окна '''
+''' Создание окон '''
 
 
 class MainWindow(QMainWindow):
@@ -166,7 +179,7 @@ class Servername(QMainWindow):
             if_refresh_slots, if_check_game = True, True
             slot_refreshing = Thread(target=list_refresh, args=(lobby,))
             slot_refreshing.start()
-            sleep(1)
+            sleep(0.5)
             if get_server_role(game_info['name'], game_info['nick']) != 'host':
                 game_status_checking = Thread(target=check_game_status, args=(game_info['name'], game_info['nick']))
                 game_status_checking.start()
@@ -197,6 +210,7 @@ class Lobby(QMainWindow):
     def start_clicked(self):
         global if_refresh_slots
         if_refresh_slots = False
+        distribute_roles_and_locations()
         change_game_status(game_info['name'], 'started')
         local_timer = Thread(target=set_the_local_timer)
         local_timer.start()

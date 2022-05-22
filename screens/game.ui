@@ -69,6 +69,31 @@ background-color: rgb(124, 41, 0);</string>
      <string>Вычислите шпиона пока у вас есть время!</string>
     </property>
    </widget>
+   <widget class="QLabel" name="labelAddition_2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>350</y>
+      <width>241</width>
+      <height>191</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Montserrat Alternates</family>
+      <pointsize>26</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(250, 252, 251);
+</string>
+    </property>
+    <property name="text">
+     <string>Локация:</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources/>
