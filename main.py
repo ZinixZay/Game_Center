@@ -35,7 +35,6 @@ def set_the_local_timer():
     print('time_up')
 
 
-
 def close_all_threads():
     global if_check_game, if_refresh_slots
     if get_server_role(game_info['name'], game_info['nick']) == 'host':
@@ -50,6 +49,7 @@ def check_game_status(name: str, nickname: str):
         if status == 'started':
             local_timer = Thread(target=set_the_local_timer)
             local_timer.start()
+            move_forward(1)
             break
         sleep(2)
 
@@ -131,10 +131,6 @@ class MainWindow(QMainWindow):
         nick = self.nameLine.text()
         call_status = 'connect'
         move_forward(1)
-
-    def closeEvent(self, event):
-        print('zxc')
-        event.accept()
 
 
 class Servername(QMainWindow):

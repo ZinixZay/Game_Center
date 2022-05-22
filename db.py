@@ -96,6 +96,7 @@ def leave_player(name: str, nickname: str):
 def get_game_status(name: str, nickname: str):
     com = f"SELECT status FROM {name} WHERE name=('{nickname}')"
     cur.execute(com)
+    return next(cur)[0]
 
 
 def change_game_status(name: str, val: str):
