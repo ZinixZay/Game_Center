@@ -53,7 +53,6 @@ def check_all_ready():
         statuses = list()
         for nickname in players:
             statuses.append(get_ready_status(game_info['name'], nickname))
-        print(statuses)
         if 'no' not in statuses:
             end_game(game_info['name'])
             calculate_game_result()
