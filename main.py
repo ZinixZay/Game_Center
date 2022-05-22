@@ -11,10 +11,22 @@ from errors import error_codes
 ''' Вспомогательные функции '''
 
 
+def close_all_threads():
+    global if_check_game, if_refresh_slots
+    if_check_game, if_refresh_slots = False, False
+
+
+def check_game_status(name: str, nickname: str):
+    sleep(5)
+    while if_check_game:
+        get_game_status(name, nickname)
+        sleep(2)
+
+
 def list_refresh(lobby):
     global game_info
     name = game_info['name']
-    while 1:
+    while if_refresh_slots:
         try:
             players = get_player_nicknames(name)
         except:
@@ -89,6 +101,10 @@ class MainWindow(QMainWindow):
         call_status = 'connect'
         move_forward(1)
 
+    def closeEvent(self, event):
+        print('zxc')
+        event.accept()
+
 
 class Servername(QMainWindow):
     def __init__(self):
@@ -119,9 +135,12 @@ class Servername(QMainWindow):
             if get_server_role(game_info['name'], game_info['nick']) != 'host':
                 lobby.startButton.hide()
             lobby.labelLobbyname.setText(game_info['name'])
-            global t1
-            t1 = Thread(target=list_refresh, args=(lobby,))
-            t1.start()
+            global t1, if_refresh_slots, if_check_game
+            if_refresh_slots, if_check_game = True, True
+            slot_refreshing = Thread(target=list_refresh, args=(lobby,))
+            slot_refreshing.start()
+            game_status_checking = Thread(target=check_game_status, args=(game_info['name'], game_info['nick']))
+            game_status_checking.start()
             move_forward(1)
 
     def back_clicked(self):
@@ -134,21 +153,33 @@ class Lobby(QMainWindow):
         global game_info
         super(Lobby, self).__init__()
         loadUi("screens/lobby.ui", self)
-        self.backButton.clicked.connect(self.back_button)
+        self.backButton.clicked.connect(self.back_clicked)
+        self.startButton.clicked.connect(self.start_clicked)
 
-    def back_button(self):
+    def back_clicked(self):
+        global if_refresh_slots, if_check_game
+        if_refresh_slots, if_check_game = False, False
         if get_server_role(game_info['name'], game_info['nick']) == 'host':
             drop_lobby(game_info['name'])
         else:
             leave_player(game_info['name'], game_info['nick'])
         move_back(2)
 
+    def start_clicked(self):
+        change_game_status(game_info['name'], 'started')
+
+
+class Screens(QtWidgets.QStackedWidget):
+    def closeEvent(self, event):
+        close_all_threads()
+        event.accept()
+
 
 ''' Запуск программы '''
 
 app = QApplication(sys.argv)
 id = QFontDatabase.addApplicationFont('fonts/20665.ttf')
-widget = QtWidgets.QStackedWidget()
+widget = Screens()
 mainWindow = MainWindow()
 serverName = Servername()
 lobby = Lobby()

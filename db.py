@@ -39,7 +39,7 @@ def create_lobby(name: str = 'def', nickname: str = "def", role: str = 'def') ->
                   f"role CHARACTER VARYING(20)," \
                   f"server_role CHARACTER VARYING(10)," \
                   f"location CHARACTER VARYING(30)," \
-                  f"status BOOLEAN DEFAULT (false))"
+                  f"status CHARACTER VARYING(15) DEFAULT ('waiting'))"
         execute(command)
     except Exception:
         content = 'Упс! Произошла ошибка. Скорее всего лобби с таким названием уже существует. ' \
@@ -91,3 +91,15 @@ def drop_lobby(name: str):
 def leave_player(name: str, nickname: str):
     com = f"DELETE FROM {name} WHERE name=('{nickname}')"
     execute(com)
+
+
+def get_game_status(name: str, nickname: str):
+    com = f"SELECT status FROM {name} WHERE name=('{nickname}')"
+    cur.execute(com)
+    print(next(cur)[0])
+
+
+def change_game_status(name: str, val: str):
+    com = f"UPDATE {name} SET status='{val}'"
+    execute(com)
+    print('updated')
