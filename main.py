@@ -15,14 +15,17 @@ from locations import locations
 
 
 def distribute_roles_and_locations():
+    global game
     players = get_player_nicknames(game_info['name'])
     spy = random.choice(players)
     location = random.choice(locations)
-    print('rd')
     change_location(game_info['name'], location)
-    print('lc')
-    change_game_role(game_info['name'], game_info['nick'], 'spy')
-    print('rl')
+    change_game_role(game_info['name'], spy, 'spy')
+    if spy == game_info['nick']:
+        game.labelAddition.setText('Вычислите локацию пока у вас есть время!')
+        game.labelAddition_2.setText('Локация: ???')
+    else:
+        game.labelAddition_2.setText(f'Локация: {location}')
 
 
 def set_the_local_timer():
